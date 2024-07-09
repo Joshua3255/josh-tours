@@ -27,6 +27,7 @@ const userSchema = new mongoose.Schema({
     minLength: 8,
     select: false
   },
+  photo: String,
   role: {
     type: String,
     enum: ['user', 'guide', 'lead-guide', 'admin'],
