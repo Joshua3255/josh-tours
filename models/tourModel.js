@@ -46,7 +46,8 @@ const tourSchema = new mongoose.Schema(
       type: Number,
       default: 4.5,
       min: [1, 'Rating must be above 1.0'],
-      max: [5, 'Rating must be below 5.0']
+      max: [5, 'Rating must be below 5.0'],
+      set: val => Math.round(val * 10) / 10
     },
     ratingsQuantity: {
       type: Number,
@@ -99,7 +100,7 @@ const tourSchema = new mongoose.Schema(
         default: 'Point',
         enum: ['Point']
       },
-      coordinate: [Number],
+      coordinates: [Number],
       address: String,
       description: String
     },
@@ -129,6 +130,10 @@ const tourSchema = new mongoose.Schema(
     toObject: { virtuals: true }
   }
 );
+
+tourSchema.index({ price: 1, ratingsAverage: -1 });
+tourSchema.index({ slug: 1 });
+tourSchema.index({ startLocation: '2dsphere' });
 
 // not using arrow function to use this.duration
 tourSchema.virtual('durationWeeks').get(function() {
@@ -192,14 +197,14 @@ tourSchema.post(/^find/, function(docs, next) {
 });
 
 // AGGREGATION MIDDLEWARE
-tourSchema.pre('aggregate', function(next) {
-  // Javascript fun   unshift -> go to beginning of the array.   shift -> go to end of the array
-  this._pipeline.unshift({
-    $match: { secretTour: { $ne: true } }
-  });
-  console.log(this._pipeline);
-  next();
-});
+// tourSchema.pre('aggregate', function(next) {
+//   // Javascript fun   unshift -> go to beginning of the array.   shift -> go to end of the array
+//   this._pipeline.unshift({
+//     $match: { secretTour: { $ne: true } }
+//   });
+//   console.log(this._pipeline);
+//   next();
+// });
 
 const Tour = mongoose.model('Tour', tourSchema);
 module.exports = Tour;

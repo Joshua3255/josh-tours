@@ -5,6 +5,8 @@ const reviewRouter = require('./reviewRoutes');
 
 const router = express.Router();
 
+// ** We want to expose some tour api to everyone to be embeded third party site
+
 // router.param('id', tourController.checkId);
 
 // POST /tour/12345/reviews
@@ -27,7 +29,27 @@ router
 
 router
   .route('/monthly-plan/:year')
-  .get(tourController.getMonthlyPlan);
+  .get(
+    authController.protect,
+    authController.restrictTo(
+      'admin',
+      'lead-guide',
+      'guide'
+    ),
+    tourController.getMonthlyPlan
+  );
+
+// /tours-distnace?distance=233&center=-40,45&unit=mi
+// /tours-distance/233/center/-40,45/unit/mi
+router
+  .route(
+    '/tours-within/:distance/center/:latlng/unit/:unit'
+  )
+  .get(tourController.getToursWithin);
+
+router
+  .route('/distances/:latlng/unit/:unit')
+  .get(tourController.getDistances);
 
 //Aliasing
 router
@@ -39,19 +61,25 @@ router
 
 router
   .route('/')
-  .get(authController.protect, tourController.getAllTours)
+  .get(tourController.getAllTours)
   .post(
     // tourController.checkBOdy,
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide'),
     tourController.createTour
   );
 
 router
   .route('/:id')
   .get(tourController.getTour)
-  .patch(tourController.updateTour)
+  .patch(
+    authController.protect,
+    authController.restrictTo('admin', 'lead-guide'),
+    tourController.updateTour
+  )
   .delete(
     authController.protect,
-    authController.restrictTo('admin', 'guide'),
+    authController.restrictTo('admin', 'lead-guide'),
     tourController.deleteTour
   );
 
