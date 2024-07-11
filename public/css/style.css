@@ -121,7 +121,11 @@ body {
     from(#7dd56f),
     to(#28b487)
   );
-  background-image: linear-gradient(to right, #7dd56f, #28b487);
+  background-image: linear-gradient(
+    to right,
+    #7dd56f,
+    #28b487
+  );
   -webkit-background-clip: text;
   color: transparent;
   letter-spacing: 0.1rem;
@@ -136,7 +140,11 @@ body {
     from(#ff7730),
     to(#eb4d4b)
   );
-  background-image: linear-gradient(to right, #ff7730, #eb4d4b);
+  background-image: linear-gradient(
+    to right,
+    #ff7730,
+    #eb4d4b
+  );
   font-size: 3.5rem;
 }
 
@@ -375,7 +383,11 @@ body {
     from(#7dd56f),
     to(#28b487)
   );
-  background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
+  background-image: linear-gradient(
+    to right bottom,
+    #7dd56f,
+    #28b487
+  );
   opacity: 0.85;
 }
 
@@ -422,7 +434,9 @@ body {
   height: 2rem;
   width: 2rem;
   fill: currentColor;
-  -webkit-filter: drop-shadow(0 0.75rem 0.5rem rgba(0, 0, 0, 0.25));
+  -webkit-filter: drop-shadow(
+    0 0.75rem 0.5rem rgba(0, 0, 0, 0.25)
+  );
   filter: drop-shadow(0 0.75rem 0.5rem rgba(0, 0, 0, 0.25));
 }
 
@@ -584,7 +598,11 @@ body {
     from(#7dd56f),
     to(#28b487)
   );
-  background: linear-gradient(to right bottom, #7dd56f, #28b487);
+  background: linear-gradient(
+    to right bottom,
+    #7dd56f,
+    #28b487
+  );
   clip-path: polygon(
     0 var(--section-rotate),
     100% 0,
@@ -722,7 +740,11 @@ body {
     from(#7dd56f),
     to(#28b487)
   );
-  background: linear-gradient(to right bottom, #7dd56f, #28b487);
+  background: linear-gradient(
+    to right bottom,
+    #7dd56f,
+    #28b487
+  );
   z-index: 10;
   -webkit-transform: translate(-35%, -50%);
   transform: translate(-35%, -50%);
@@ -779,7 +801,11 @@ body {
     from(#7dd56f),
     to(#28b487)
   );
-  background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
+  background-image: linear-gradient(
+    to right bottom,
+    #7dd56f,
+    #28b487
+  );
   padding: 4rem 0;
 }
 .user-view__content {
@@ -830,6 +856,7 @@ body {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  justify-content: flex-end;
 }
 .footer__nav li {
   margin-left: 1.5rem;
@@ -1100,7 +1127,12 @@ body {
 }
 .card__picture {
   position: relative;
-  -webkit-clip-path: polygon(0 0, 100% 0%, 100% 83%, 0% 98%);
+  -webkit-clip-path: polygon(
+    0 0,
+    100% 0%,
+    100% 83%,
+    0% 98%
+  );
   clip-path: polygon(0 0, 100% 0%, 100% 83%, 0% 98%);
   height: 22rem;
 }
@@ -1115,7 +1147,11 @@ body {
     from(#7dd56f),
     to(#28b487)
   );
-  background-image: linear-gradient(to right bottom, #7dd56f, #28b487);
+  background-image: linear-gradient(
+    to right bottom,
+    #7dd56f,
+    #28b487
+  );
   opacity: 0.7;
 }
 .card__picture-img {
