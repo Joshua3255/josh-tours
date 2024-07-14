@@ -30,33 +30,59 @@ const handleTokenExpiredError = () =>
     401
   );
 
-const sendErrorForDev = (err, res) => {
-  res.status(err.statusCode).json({
-    status: err.status,
-    error: err,
-    message: `${err.message}`,
-    stack: err.stack
+const sendErrorForDev = (err, req, res) => {
+  //API
+  if (req.originalUrl.startsWith('/api')) {
+    res.status(err.statusCode).json({
+      status: err.status,
+      error: err,
+      message: `${err.message}`,
+      stack: err.stack
+    });
+  }
+  // RENDERED WEBSITE
+  console.error('ERROR ❌', err);
+  return res.status(err.statusCode).render('error', {
+    title: 'Something went wrong!',
+    msg: err.message
   });
 };
 
-const sendErrorProduction = (err, res) => {
-  //Operational, trusted error: send message to client
-  if (err.isOperational) {
-    res.status(err.statusCode).json({
-      status: err.status,
-      message: `${err.message}`
-    });
-    //Programming or other unknown error: don't leak erro details
-  } else {
+const sendErrorProduction = (err, req, res) => {
+  //API
+  if (req.originalUrl.startsWith('/api')) {
+    //Operational, trusted error: send message to client
+    if (err.isOperational) {
+      return res.status(err.statusCode).json({
+        status: err.status,
+        message: `${err.message}`
+      });
+      //Programming or other unknown error: don't leak erro details
+    }
     // 1) Log error
     console.error('ERROR ❌', err);
 
     // 2) Send generic message
-    res.status(500).json({
+    return res.status(500).json({
       status: 'error',
       message: 'Something went very wrong!'
     });
   }
+
+  // RENDERED WEBSITE
+  if (err.isOperational) {
+    return res.status(err.statusCode).render('error', {
+      title: 'Something went wrong!',
+      msg: `${err.message}`
+    });
+  }
+  // 1) Log error
+  console.error('ERROR ❌', err);
+  // 2) Send generic message
+  return res.status(err.statusCode).render('error', {
+    title: 'Something went wrong!',
+    msg: 'Please try again later,'
+  });
 };
 
 module.exports = (err, req, res, next) => {
@@ -64,9 +90,10 @@ module.exports = (err, req, res, next) => {
   err.status = err.status || 'error';
 
   if (process.env.NODE_ENV === 'development') {
-    sendErrorForDev(err, res);
+    sendErrorForDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };
+    error.message = err.message;
     if (err.name === 'CastError')
       error = handleCastErrorDB(error);
     if (err.code === 11000)
@@ -85,6 +112,6 @@ module.exports = (err, req, res, next) => {
     }
 
     //if(err.name === 'TokenExpiredError')
-    sendErrorProduction(error, res);
+    sendErrorProduction(error, req, res);
   }
 };

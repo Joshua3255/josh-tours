@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
+const cookieParser = require('cookie-parser');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -40,6 +41,10 @@ app.use('/api', limiter);
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
+app.use(cookieParser());
+app.use(
+  express.urlencoded({ extended: true, limit: '10kb' })
+); // allowed to parse form data. So we can see the form data using req.body
 
 // Data Sanitization against NoSQL query injection  ex: condition on user table  {"email": {"$gt":""}}
 app.use(mongoSanitize());

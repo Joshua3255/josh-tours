@@ -32,6 +32,7 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   // 2) Filtered out unwanted fields names that are not allowed to be updated
   const filteredBody = filterObj(req.body, 'name', 'email'); // update the fields only what we want for security . ex) updating role to admin;
   // 3) Update user document
+  // console.log(filteredBody);
   const updateUser = await User.findByIdAndUpdate(
     req.user.id,
     filteredBody,
