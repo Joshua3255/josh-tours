@@ -18,16 +18,13 @@ const userSchema = new mongoose.Schema({
       'Please provide a valid email'
     ]
   },
-  photo: {
-    type: String
-  },
   password: {
     type: String,
     required: [true, 'Please provide a password'],
     minLength: 8,
     select: false
   },
-  photo: String,
+  photo: { type: String, default: 'default.jpg' },
   role: {
     type: String,
     enum: ['user', 'guide', 'lead-guide', 'admin'],
@@ -108,7 +105,7 @@ userSchema.methods.createPasswordResetToken = function() {
     .update(resetToken)
     .digest('hex');
 
-  console.log({ resetToken }, this.passwordResetExpires);
+  //console.log({ resetToken }, this.passwordResetExpires);
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000; //10 minutes
 
   return resetToken;

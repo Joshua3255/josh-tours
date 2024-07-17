@@ -3,6 +3,7 @@ import '@babel/polyfill';
 import { login, logout } from './login';
 import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings';
+import { bookTour } from './stripe';
 
 // DOM elements
 const mapBox = document.getElementById('map');
@@ -16,6 +17,7 @@ const userDataForm = document.querySelector(
 const userPasswordForm = document.querySelector(
   '.form-user-password'
 );
+const bookBtn = document.getElementById('book-tour');
 
 //VALUES
 
@@ -41,9 +43,23 @@ if (logOutBtn) logOutBtn.addEventListener('click', logout);
 if (userDataForm)
   userDataForm.addEventListener('submit', e => {
     e.preventDefault();
-    const email = document.getElementById('email').value;
-    const name = document.getElementById('name').value;
-    updateSettings({ name, email }, 'data');
+    const form = new FormData();
+    form.append(
+      'name',
+      document.getElementById('name').value
+    );
+    form.append(
+      'email',
+      document.getElementById('email').value
+    );
+    form.append(
+      'photo',
+      document.getElementById('photo').files[0]
+    );
+
+    //console.log(form);
+
+    updateSettings(form, 'data');
   });
 
 if (userPasswordForm)
@@ -73,3 +89,11 @@ if (userPasswordForm)
     document.getElementById('password').value = '';
     document.getElementById('password-confirm').value = '';
   });
+
+if (bookBtn) {
+  bookBtn.addEventListener('click', e => {
+    e.target.textContent = 'Prcessing...';
+    const { tourId } = e.target.dataset;
+    bookTour(tourId);
+  });
+}
