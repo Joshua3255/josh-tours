@@ -8,6 +8,8 @@ const mongoSanitize = require('express-mongo-sanitize');
 const xss = require('xss-clean');
 const hpp = require('hpp');
 const cookieParser = require('cookie-parser');
+const compression = require('compression');
+const cors = require('cors');
 
 const AppError = require('./utils/appError');
 const globalErrorHandler = require('./controllers/errorController');
@@ -15,14 +17,24 @@ const tourRouter = require('./routes/tourRoutes');
 const userRouter = require('./routes/userRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const bookingRouter = require('./routes/bookingRoutes');
+const bookingController = require('./controllers/bookingController');
 const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
+
+app.enable('trust proxy'); // Only for Heroku
 
 app.set('view engine', 'pug');
 app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
+// Implement CORS
+app.use(cors());
+// Access-Control-Allow-Origin
+
+app.options('*', cors());
+// app.options('/api/v1/tours/:id', cors()) // only allowr CORS on this specific route
+
 //SET  Security HTTP headers
 app.use(helmet());
 
@@ -39,6 +51,12 @@ const limiter = rateLimit({
     'Too many requests from this I, please try again in an hour'
 });
 app.use('/api', limiter);
+
+app.post(
+  '/webhook-checkout',
+  express.raw({ type: 'application/json' }),
+  bookingController.webhookCheckout
+); // we need raw body. That's why we put this line before Body parser.
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: '10kb' }));
@@ -71,6 +89,8 @@ app.use(
 // Serving static files
 // app.use(express.static(`${__dirname}/public`));
 app.use(express.static(path.join(__dirname, 'public')));
+
+app.use(compression()); //compress all text of our responses
 
 // Test middleware
 app.use((req, res, next) => {

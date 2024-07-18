@@ -4,6 +4,14 @@ const AppError = require('../utils/appError');
 const User = require('../models/userModel');
 const Booking = require('../models/bookingModel');
 
+exports.alerts = (req, res, next) => {
+  const { alert } = req.query;
+  if (alert === 'booking')
+    res.locals.alert =
+      "Your booking was successful! Please check your email for a confirmation. If your booking doesn't show up here immediatly, please come back later.";
+  next();
+};
+
 exports.getOverview = catchAsync(async (req, res, next) => {
   // 1) Get tour data from collection
   const tours = await Tour.find();
@@ -60,13 +68,13 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
     user: req.user.id
   });
 
-  console.log(bookings);
+  // console.log(bookings);
 
   // 2) Find tours with the returned IDs
   const tourIds = bookings.map(el => el.tour);
   const tours = await Tour.find({ _id: { $in: tourIds } });
 
-  console.log(tours);
+  // console.log(tours);
 
   res.status(200).render('overview', {
     title: 'My Tours',

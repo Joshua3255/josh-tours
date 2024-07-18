@@ -5,9 +5,10 @@ const bookingController = require('../controllers/bookingController');
 
 const router = express.Router();
 
+router.use(viewsController.alerts);
+
 router.get(
   '/',
-  bookingController.createBookingCheckout,
   authController.isLoggedIn,
   viewsController.getOverview
 );
@@ -34,6 +35,7 @@ router.get(
 
 router.get(
   '/my-tours',
+  bookingController.createBookingCheckout,
   authController.protect,
   viewsController.getMyTours
 );

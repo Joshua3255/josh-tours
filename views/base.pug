@@ -11,7 +11,7 @@ html
         rel="stylesheet")
       title JoshTours | #{title}
   
-  body
+  body(data-alert=`${alert ? alert:''}`)
     // HEADER
     include _header
 

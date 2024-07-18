@@ -12,7 +12,7 @@ const signToken = id => {
   });
 };
 
-const createSendToken = (user, statusCode, res) => {
+const createSendToken = (user, statusCode, req, res) => {
   const token = signToken(user._id);
 
   const cookieOptions = {
@@ -24,10 +24,13 @@ const createSendToken = (user, statusCode, res) => {
           60 *
           1000
     ),
-    httpOnly: true
+    httpOnly: true,
+    // req.headers('x-forwarded-pro') === 'https' condition is only for Heroku
+    // secure = true; // only using cookie on HTTPS
+    secure:
+      req.secure ||
+      req.headers('x-forwarded-pro') === 'https'
   };
-  if (process.env.NODE_END === 'production')
-    cookieOptions.secure = true; // only using cookie on HTTPS
 
   res.cookie('jwt', token, cookieOptions);
 
@@ -54,7 +57,7 @@ exports.signup = catchAsync(async (req, res, next) => {
   //console.log(url);
   await new Email(newUser, url).sendWelcome();
 
-  createSendToken(newUser, 201, res);
+  newUser, 201, res;
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -85,7 +88,7 @@ exports.login = catchAsync(async (req, res, next) => {
   }
 
   //3) If everything is ok, send token to client
-  createSendToken(user, 200, res);
+  createSendToken(user, 200, req, res);
 });
 
 exports.logout = (req, res) => {
@@ -283,7 +286,7 @@ exports.resetPassword = catchAsync(
     //3) Update changePasswordAT property fo the user
 
     //4) Log the user in, send JWT
-    createSendToken(user, 201, res);
+    createSendToken(user, 201, req, res);
   }
 );
 
@@ -316,6 +319,6 @@ exports.updatePassword = catchAsync(
     // User.findByIdAndUpdate will NOT work as intended:
 
     //4) Log user in, send JWT
-    createSendToken(user, 200, res);
+    createSendToken(user, 200, req, res);
   }
 );
