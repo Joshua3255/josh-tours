@@ -14,7 +14,9 @@ exports.getCheckoutSession = catchAsync(
     const tour = await Tour.findById(req.params.tourId);
 
     const success_url =
-      process.env.NODE_ENV === 'production'
+      // Stripe WebHook only with the real domain. Not working on Ngrok domain.
+      process.env.NODE_ENV ===
+      'productionIfyouUseRealDoamin'
         ? `${req.protocol}://${req.get(
             'host'
           )}/my-tours?alert=booking`
