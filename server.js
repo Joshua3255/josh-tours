@@ -39,9 +39,10 @@ process.on('unhandledRejection', err => {
   console.log(err.name, err.message);
   console.log(err);
   console.log('UNHANDLER REJECTION! ❌ Shutting down...');
-  server.close(() => {
-    process.exit(1);
-  });
+  // For running Demo server continuosly, do not run process.exit when we had unhandledRejection errors
+  // server.close(() => {
+  //   process.exit(1);
+  // });
 });
 
 process.on('SIGTERM', () => {
