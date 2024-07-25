@@ -14,9 +14,8 @@ exports.getCheckoutSession = catchAsync(
     const tour = await Tour.findById(req.params.tourId);
 
     const success_url =
-      // Stripe WebHook only with the real domain. Not working on Ngrok domain.
-      process.env.NODE_ENV ===
-      'productionIfyouUseRealDoamin'
+      // Stripe WebHook only with the real domain.
+      process.env.NODE_ENV === 'production'
         ? `${req.protocol}://${req.get(
             'host'
           )}/my-tours?alert=booking`
@@ -96,7 +95,8 @@ const createBookingCheckoutFunction = async session => {
     email: session.customer_email
   })).id;
   const price =
-    session.line_items.price_data.unit_amount / 100;
+    //session.line_items.price_data.unit_amount / 100;
+    session.amount_total / 100;
 
   await Booking.create({ tour, user, price });
 };
