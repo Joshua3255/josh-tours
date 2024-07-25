@@ -16,7 +16,7 @@ You can explore this by clicking on [Josh Tours Website](https://classic-sunny-c
 - Authentication and authorization using **JWT**
 - **Security**: encryption(bcryptjs), sanitization(express-mongo-sanitize), rate limiting(express-rate-limit), secured HTTP headers(Helmet)
 - Server-side website rendering with **Pug templates**
-- Credit card payments with **Stripe**
+- Secure Payments: **Integrated Stripe payment** form for secure transactions.
 - Sending emails with **PostMark** & uploading files to **MongoDB Atlas**
 
 ## User-Facing Features
@@ -41,10 +41,33 @@ You can explore this by clicking on [Josh Tours Website](https://classic-sunny-c
     ```bash
     npm install
     ```
+4.  Create a `config.env` file in the root directory of your project and add the following parameters:
+
+- NODE_ENV=development
+- PORT=3000
+- DATABASE={Your MongoDB Atlas}
+- DATABASE_LOCAL={Your local MongoDB}
+- DATABASE_PASSWORD={Your variable}
+- JWT_SECRET={Your variable}
+- JWT_EXPIRES_IN=90d
+- JWT_COOKIE_EXPIRES_IN=90
+- EMAIL_USERNAME={Your mailtrap.io variable}
+- EMAIL_PASSWORD={Your mailtrap.io variable}
+- EMAIL_HOST=sandbox.smtp.mailtrap.io
+- EMAIL_PORT=2525
+- // For production
+- EMAIL_FROM={Your variable}
+- SENDGRID_USERNAME=apikey
+- SENDGRID_PASSWORD=password
+- POSTMARK_HOST=smtp.postmarkapp.com
+- POSTMARK_USERNAME={Your variable}
+- POSTMARK_PASSWORD={Your variable}
+- STRIPE_SECTRET_KEY={Your variable}
+- STRIPE_WEBHOOK_SECRET={Your variable}
 
 ### Running the Project
 
-4.  Start the development server (3 mode - Without nodemon, Development, Production):
+5.  Start the development server (3 mode - Without nodemon, Development, Production):
 
     ```bash
     npm start  or
@@ -53,7 +76,7 @@ You can explore this by clicking on [Josh Tours Website](https://classic-sunny-c
 
     ```
 
-5.  Open your browser and go to:
+6.  Open your browser and go to:
     ```bash
     http://localhost:3000
     ```
