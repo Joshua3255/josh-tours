@@ -10,7 +10,7 @@ Welcome to the Tour Booking Site! This project is a comprehensive web applicatio
 
 You can explore this by clicking on [Josh Tours Website](https://classic-sunny-clam.ngrok-free.app/).
 
-## Features
+## Technology Features
 
 - Feature-rich **RESTful API** (includes filters, sorts, pagination, and much more)
 - Authentication and authorization using **JWT**
@@ -18,6 +18,8 @@ You can explore this by clicking on [Josh Tours Website](https://classic-sunny-c
 - Server-side website rendering with **Pug templates**
 - Credit card payments with **Stripe**
 - Sending emails with **PostMark** & uploading files to **MongoDB Atlas**
+
+## User-Facing Features
 
 - Explore Tours: Browse through a variety of tours with detailed information, including duration, difficulty level, price, and starting locations.
 - Tour Details: Each tour comes with a detailed description, itinerary, images, and start dates to help you make an informed decision.
