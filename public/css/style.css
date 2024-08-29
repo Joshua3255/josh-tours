@@ -232,6 +232,8 @@ body {
   background-color: #2e864b;
 }
 
+
+
 .btn--white {
   background-color: #fff;
   color: #777;
@@ -822,6 +824,12 @@ body {
   padding: 0 8rem;
 }
 
+
+.user-view__my-tours-container {  
+  font-size:1.5rem;
+  padding: 0 3rem;
+}
+
 .footer {
   background-color: #f7f7f7;
   padding: 6rem 4rem 3rem 4rem;
@@ -1384,3 +1392,34 @@ body {
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
 }
+
+.my-tours-tabel{
+  border: 1px solid #777;
+}
+
+.my-tours-header{
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1fr 1fr;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 2rem;
+  border-bottom: 1px solid #777;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+}
+
+.my-tours-rows{
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1fr 1fr;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #777;
+  padding: 1rem;
+  gap:1rem;
+}
+
+.my-tours-rows img{
+  width:100%
+}
+
+

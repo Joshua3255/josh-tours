@@ -8270,7 +8270,7 @@ function () {
             (0, _alert.showAlert)('success', 'Sign up successfully!');
             window.setTimeout(function () {
               return location.assign('/');
-            }, 1500);
+            }, 1000);
           }
 
           _context.next = 10;
@@ -8321,7 +8321,7 @@ function () {
             (0, _alert.showAlert)('success', 'Logged in successfully!');
             window.setTimeout(function () {
               return location.assign('/');
-            }, 1500);
+            }, 1000);
           }
 
           _context2.next = 10;
@@ -8965,7 +8965,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57619" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59070" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
