@@ -8224,7 +8224,7 @@ var showAlert = exports.showAlert = function showAlert(type, msg) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.logout = exports.login = void 0;
+exports.signup = exports.logout = exports.login = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -8240,12 +8240,12 @@ function asyncGeneratorStep(n, t, e, r, o, a, c) { try { var i = n[a](c), u = i.
 
 function _asyncToGenerator(n) { return function () { var t = this, e = arguments; return new Promise(function (r, o) { var a = n.apply(t, e); function _next(n) { asyncGeneratorStep(a, r, o, _next, _throw, "next", n); } function _throw(n) { asyncGeneratorStep(a, r, o, _next, _throw, "throw", n); } _next(void 0); }); }; }
 
-var login = exports.login =
+var signup = exports.signup =
 /*#__PURE__*/
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  _regeneratorRuntime().mark(function _callee(email, password) {
+  _regeneratorRuntime().mark(function _callee(name, email, password, passwordConfirm) {
     var res;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
@@ -8254,10 +8254,12 @@ function () {
           _context.next = 3;
           return (0, _axios.default)({
             method: 'POST',
-            url: '/api/v1/users/login',
+            url: '/api/v1/users/signup',
             data: {
+              name: name,
               email: email,
-              password: password
+              password: password,
+              passwordConfirm: passwordConfirm
             }
           });
 
@@ -8265,7 +8267,7 @@ function () {
           res = _context.sent;
 
           if (res.data.status === 'success') {
-            (0, _alert.showAlert)('success', 'Logged in successfully!');
+            (0, _alert.showAlert)('success', 'Sign up successfully!');
             window.setTimeout(function () {
               return location.assign('/');
             }, 1500);
@@ -8286,17 +8288,17 @@ function () {
     }, _callee, null, [[0, 7]]);
   }));
 
-  return function login(_x, _x2) {
+  return function signup(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
   };
 }();
 
-var logout = exports.logout =
+var login = exports.login =
 /*#__PURE__*/
 function () {
   var _ref2 = _asyncToGenerator(
   /*#__PURE__*/
-  _regeneratorRuntime().mark(function _callee2() {
+  _regeneratorRuntime().mark(function _callee2(email, password) {
     var res;
     return _regeneratorRuntime().wrap(function _callee2$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
@@ -8304,31 +8306,83 @@ function () {
           _context2.prev = 0;
           _context2.next = 3;
           return (0, _axios.default)({
-            method: 'GET',
-            url: '/api/v1/users/logout'
+            method: 'POST',
+            url: '/api/v1/users/login',
+            data: {
+              email: email,
+              password: password
+            }
           });
 
         case 3:
           res = _context2.sent;
-          if (res.data.status === 'success') location.reload(true);
-          _context2.next = 11;
+
+          if (res.data.status === 'success') {
+            (0, _alert.showAlert)('success', 'Logged in successfully!');
+            window.setTimeout(function () {
+              return location.assign('/');
+            }, 1500);
+          }
+
+          _context2.next = 10;
           break;
 
         case 7:
           _context2.prev = 7;
           _context2.t0 = _context2["catch"](0);
-          console.log(_context2.t0.response);
-          (0, _alert.showAlert)(_context2.t0, 'Error logging out! Try again');
+          (0, _alert.showAlert)('error', _context2.t0.response.data.message);
 
-        case 11:
+        case 10:
         case "end":
           return _context2.stop();
       }
     }, _callee2, null, [[0, 7]]);
   }));
 
-  return function logout() {
+  return function login(_x5, _x6) {
     return _ref2.apply(this, arguments);
+  };
+}();
+
+var logout = exports.logout =
+/*#__PURE__*/
+function () {
+  var _ref3 = _asyncToGenerator(
+  /*#__PURE__*/
+  _regeneratorRuntime().mark(function _callee3() {
+    var res;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.prev = 0;
+          _context3.next = 3;
+          return (0, _axios.default)({
+            method: 'GET',
+            url: '/api/v1/users/logout'
+          });
+
+        case 3:
+          res = _context3.sent;
+          if (res.data.status === 'success') //location.reload(true);
+            location.href = '/';
+          _context3.next = 11;
+          break;
+
+        case 7:
+          _context3.prev = 7;
+          _context3.t0 = _context3["catch"](0);
+          console.log(_context3.t0.response);
+          (0, _alert.showAlert)(_context3.t0, 'Error logging out! Try again');
+
+        case 11:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3, null, [[0, 7]]);
+  }));
+
+  return function logout() {
+    return _ref3.apply(this, arguments);
   };
 }();
 },{"axios":"../../node_modules/axios/index.js","./alert":"alert.js"}],"mapbox.js":[function(require,module,exports) {
@@ -8787,6 +8841,7 @@ function _asyncToGenerator(n) { return function () { var t = this, e = arguments
 // DOM elements
 var mapBox = document.getElementById('map');
 var loginForm = document.querySelector('.form--login');
+var signupForm = document.querySelector('.form--signup');
 var logOutBtn = document.querySelector('.nav_el---logout');
 var userDataForm = document.querySelector('.form-user-data');
 var userPasswordForm = document.querySelector('.form-user-password');
@@ -8803,6 +8858,22 @@ if (loginForm) {
     var email = document.getElementById('email').value;
     var password = document.getElementById('password').value;
     (0, _login.login)(email, password);
+  });
+}
+
+if (signupForm) {
+  signupForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var name = document.getElementById('username').value;
+    var email = document.getElementById('email').value;
+    var password = document.getElementById('password').value;
+    var passwordConfirm = document.getElementById('passwordConfirm').value; // This logic had already been in the User Schema
+    // if (password !== passwordConfirm){
+    //   showAlert('error', 'Confirmed password was not matched!');
+    //   return false;
+    // }
+
+    (0, _login.signup)(name, email, password, passwordConfirm);
   });
 }
 
@@ -8894,7 +8965,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "9658" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57619" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -191,6 +191,8 @@ body {
   z-index: 10;
 }
 
+
+
 .btn,
 .btn:link,
 .btn:visited {
@@ -1267,6 +1269,16 @@ body {
   border-radius: 5px;
 }
 
+.signup-form {
+  margin: 0 auto;
+  max-width: 80rem;
+  background-color: #fff;
+  -webkit-box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
+  box-shadow: 0 2.5rem 8rem 2rem rgba(0, 0, 0, 0.06);
+  padding: 5rem 7rem;
+  border-radius: 5px;
+}
+
 .form__input {
   display: block;
   font-family: inherit;
@@ -1298,8 +1310,21 @@ body {
   color: #bbb;
 }
 
+.signup-form .form__group{
+  display:grid;
+  grid-template-columns: 1fr 3fr;
+  gap:1rem;
+  align-items: center;
+}
+
 .form__group:not(:last-child) {
   margin-bottom: 2.5rem;
+}
+
+.h-end {
+  justify-content: end;
+  display: flex;
+  align-items: center;
 }
 
 .form__label {
@@ -1308,6 +1333,7 @@ body {
   font-weight: 700;
   margin-bottom: 0.75rem;
 }
+
 
 .form__photo-upload {
   display: -webkit-box;

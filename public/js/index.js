@@ -1,6 +1,6 @@
 /* eslint-disable */
 import '@babel/polyfill';
-import { login, logout } from './login';
+import { login, logout, signup } from './login';
 import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
@@ -9,6 +9,8 @@ import { showAlert } from './alert';
 // DOM elements
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
+const signupForm = document.querySelector('.form--signup');
+
 const logOutBtn = document.querySelector(
   '.nav_el---logout'
 );
@@ -36,6 +38,25 @@ if (loginForm) {
     const password = document.getElementById('password')
       .value;
     login(email, password);
+  });
+}
+
+if (signupForm) {
+  signupForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const name = document.getElementById('username').value;
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password')
+      .value;
+    const passwordConfirm = document.getElementById('passwordConfirm')
+    .value;
+
+    // This logic had already been in the User Schema
+    // if (password !== passwordConfirm){
+    //   showAlert('error', 'Confirmed password was not matched!');
+    //   return false;
+    // }
+    signup(name, email, password, passwordConfirm);
   });
 }
 

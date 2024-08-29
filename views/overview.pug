@@ -1,7 +1,9 @@
 extends base
 
 block content 
-  main.main 
+  main.main     
+    if !tours.length
+      p.heading-secondary.heading-secondary--error There is no Booking now.
     .card-container
       each tour in tours
         .card
