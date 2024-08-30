@@ -1,6 +1,8 @@
 /* eslint-disable */
 import '@babel/polyfill';
 import { login, logout, signup } from './login';
+import { submitReview } from './review';
+
 import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings';
 import { bookTour } from './stripe';
@@ -10,6 +12,7 @@ import { showAlert } from './alert';
 const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const signupForm = document.querySelector('.form--signup');
+const reviewForm = document.querySelector('.form--review');
 
 const logOutBtn = document.querySelector(
   '.nav_el---logout'
@@ -42,14 +45,17 @@ if (loginForm) {
 }
 
 if (signupForm) {
+  console.log('signupForm', signupForm);
+
   signupForm.addEventListener('submit', e => {
     e.preventDefault();
     const name = document.getElementById('username').value;
     const email = document.getElementById('email').value;
     const password = document.getElementById('password')
       .value;
-    const passwordConfirm = document.getElementById('passwordConfirm')
-    .value;
+    const passwordConfirm = document.getElementById(
+      'passwordConfirm'
+    ).value;
 
     // This logic had already been in the User Schema
     // if (password !== passwordConfirm){
@@ -57,6 +63,25 @@ if (signupForm) {
     //   return false;
     // }
     signup(name, email, password, passwordConfirm);
+  });
+}
+
+if (reviewForm) {
+  console.log('reviewForm', reviewForm);
+  reviewForm.addEventListener('submit', e => {
+    e.preventDefault();
+    const review = document.getElementById('review').value;
+    const ratings = document.getElementsByName('rating');
+    let rating;
+    const tourId = document.getElementById('tourId').value;
+
+    ratings.forEach(button => {
+      if (button.checked) {
+        rating = button.value;
+      }
+    });
+
+    submitReview(rating, review, tourId);
   });
 }
 

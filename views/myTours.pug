@@ -8,8 +8,122 @@ mixin navItem(link, text, icon, active)
       | #{text}    
 
 block content 
+  style.
+    /* Basic modal styling */
+    .modal {
+      display: none; /* Hidden by default */
+      position: fixed;
+      z-index: 1;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0,0,0);
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+      
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      max-width: 80rem;
+      border-radius: 10px;
+      font-size:1.6rem;
+    }
+
+    .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+    }
+
+    .close:hover,
+    .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .ratings-group{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:2rem;
+      font-size:1.6rem;    
+      font-weight:700;  
+    }
+
+    .ratings-group input{
+      margin-right: 0.6rem;
+    }
+
+    .form--review textarea{
+      font-size:inherit;
+      font-family: inherit;
+    }
+
+    .form--review p{
+      text-transform: none;
+    }
+  script.
+    function test(bookingId) {
+      alert(bookingId);
+    }
+    // JavaScript to handle modal functionality
+    function openModal(bookingId, tourId) {
+      document.getElementById('myModal').style.display = 'block';
+      document.getElementById('bookingId').value = bookingId
+      document.getElementById('tourId').value = tourId
+    }
+
+    function closeModal() {
+      document.getElementById('myModal').style.display = 'none';
+    }
+
+    // Close the modal when clicking outside of the modal
+    window.onclick = function(event) {
+      if (event.target == document.getElementById('myModal')) {
+        closeModal();
+      }
+    } 
+
   
   main.main
+    .modal(id='myModal')
+      .modal-content
+        span.close($times;)
+        h2.heading-secondary.ma-bt-sm Submit your review
+        form.form.form--review
+          input(type="hidden" id="tourId")
+          input(type="hidden" id="bookingId")
+          p.heading-secondary.ma-bt-md We hope you enjoyed your tour! Please take a moment to leave us a review and let us know how we did.
+          .form__group
+            label.form__label(for='rating') Please rate your experience with our tour.
+            //- Radio button group for ratings
+            .ratings-group
+              div
+                input(type="radio" id="rating1" name="rating" value="1")
+                label(for="rating1") 1 - Very Poor
+              div
+                input(type="radio" id="rating2" name="rating" value="2")
+                label(for="rating2") 2 - Poor
+              div
+                input(type="radio" id="rating3" name="rating" value="3")
+                label(for="rating3") 3 - Average
+              div
+                input(type="radio" id="rating4" name="rating" value="4")
+                label(for="rating4") 4 - Good
+              div
+                input(type="radio" id="rating5" name="rating" value="5")
+                label(for="rating5") 5 - Excellent
+          .form__group
+            label.form__label(for="review") Additional Comments:
+            textarea.width-whole(id="review" name="review" rows="4" placeholder="Write your review here...")
+          .form__group 
+            button.btn.btn--green Submit
     .user-view
       nav.user-view__menu
         ul.side-nav
@@ -47,6 +161,6 @@ block content
                   p $ #{booking.price}
                   p startday
                   p endday
-                  button.btn.btn--green.btn--small(onclick=``) Review   
+                  button.btn.btn--green.btn--small(onclick=`openModal('${booking._id}', '${booking.tour._id}')`) Review   
           else 
             p.heading-secondary.heading-secondary--error There is no Booking now.  

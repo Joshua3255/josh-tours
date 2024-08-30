@@ -2,7 +2,12 @@
 import axios from 'axios';
 import { showAlert } from './alert';
 
-export const signup = async (name, email, password, passwordConfirm) => {
+export const signup = async (
+  name,
+  email,
+  password,
+  passwordConfirm
+) => {
   try {
     const res = await axios({
       method: 'POST',
@@ -52,7 +57,7 @@ export const logout = async () => {
     });
     if (res.data.status === 'success')
       //location.reload(true);
-    location.href = '/';
+      location.href = '/';
   } catch (err) {
     console.log(err.response);
     showAlert(err, 'Error logging out! Try again');

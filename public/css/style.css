@@ -67,6 +67,10 @@ body {
   margin: 0 auto;
 }
 
+.ma-bt-sm {
+  margin-bottom: 2rem !important;
+}
+
 .ma-bt-md {
   margin-bottom: 3rem !important;
 }
@@ -191,8 +195,6 @@ body {
   z-index: 10;
 }
 
-
-
 .btn,
 .btn:link,
 .btn:visited {
@@ -231,8 +233,6 @@ body {
   outline: none;
   background-color: #2e864b;
 }
-
-
 
 .btn--white {
   background-color: #fff;
@@ -824,9 +824,8 @@ body {
   padding: 0 8rem;
 }
 
-
-.user-view__my-tours-container {  
-  font-size:1.5rem;
+.user-view__my-tours-container {
+  font-size: 1.5rem;
   padding: 0 3rem;
 }
 
@@ -1318,10 +1317,10 @@ body {
   color: #bbb;
 }
 
-.signup-form .form__group{
-  display:grid;
+.signup-form .form__group {
+  display: grid;
   grid-template-columns: 1fr 3fr;
-  gap:1rem;
+  gap: 1rem;
   align-items: center;
 }
 
@@ -1341,7 +1340,6 @@ body {
   font-weight: 700;
   margin-bottom: 0.75rem;
 }
-
 
 .form__photo-upload {
   display: -webkit-box;
@@ -1393,33 +1391,40 @@ body {
   transform: translateY(-2px);
 }
 
-.my-tours-tabel{
+.my-tours-tabel {
   border: 1px solid #777;
+  border-radius: 6px;
 }
 
-.my-tours-header{
+.my-tours-header {
   display: grid;
   grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1fr 1fr;
   justify-content: space-between;
   font-weight: 600;
-  font-size: 2rem;
+  font-size: 1.8rem;
   border-bottom: 1px solid #777;
   gap: 1rem;
   padding: 0.5rem 1rem;
 }
 
-.my-tours-rows{
+.my-tours-rows {
   display: grid;
   grid-template-columns: 1fr 1.5fr 1fr 1fr 1fr 1fr 1fr;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #777;
   padding: 1rem;
-  gap:1rem;
+  gap: 1rem;
 }
 
-.my-tours-rows img{
-  width:100%
+.my-tours-rows:last-child {
+  border-bottom: none;
 }
 
+.my-tours-rows img {
+  width: 100%;
+}
 
+.width-whole {
+  width: 100%;
+}
