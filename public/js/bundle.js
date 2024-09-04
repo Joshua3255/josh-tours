@@ -8391,7 +8391,7 @@ function () {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.submitReview = void 0;
+exports.updateReviewOnBooking = exports.updateBookingIsReviewSubmitted = exports.submitReviewUpdate = exports.submitReviewDelete = exports.submitReview = exports.getBookingIdByUserIdAndTourId = void 0;
 
 var _axios = _interopRequireDefault(require("axios"));
 
@@ -8412,8 +8412,8 @@ var submitReview = exports.submitReview =
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  _regeneratorRuntime().mark(function _callee(rating, review, tourId) {
-    var res;
+  _regeneratorRuntime().mark(function _callee(rating, review, tourId, bookingId) {
+    var res, booking;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
         case 0:
@@ -8425,37 +8425,324 @@ function () {
             data: {
               review: review,
               rating: rating,
-              tour: tourId
+              tour: tourId,
+              booking: bookingId
             }
           });
 
         case 3:
           res = _context.sent;
 
-          if (res.data.status === 'success') {
-            (0, _alert.showAlert)('success', 'Your review has been submitted successfully!');
-            window.setTimeout(function () {
-              return location.assign('/my-tours');
-            }, 1000);
+          if (!(res.data.status === 'success')) {
+            _context.next = 10;
+            break;
           }
 
-          _context.next = 10;
+          (0, _alert.showAlert)('success', 'Your review has been submitted successfully!');
+          _context.next = 8;
+          return updateReviewOnBooking(bookingId, res.data.data.data._id);
+
+        case 8:
+          booking = _context.sent;
+          window.setTimeout(function () {
+            return location.assign('/my-tours');
+          }, 1000);
+
+        case 10:
+          _context.next = 15;
           break;
 
-        case 7:
-          _context.prev = 7;
+        case 12:
+          _context.prev = 12;
           _context.t0 = _context["catch"](0);
           (0, _alert.showAlert)('error', _context.t0.response.data.message);
 
-        case 10:
+        case 15:
         case "end":
           return _context.stop();
       }
-    }, _callee, null, [[0, 7]]);
+    }, _callee, null, [[0, 12]]);
   }));
 
-  return function submitReview(_x, _x2, _x3) {
+  return function submitReview(_x, _x2, _x3, _x4) {
     return _ref.apply(this, arguments);
+  };
+}();
+
+var submitReviewUpdate = exports.submitReviewUpdate =
+/*#__PURE__*/
+function () {
+  var _ref2 = _asyncToGenerator(
+  /*#__PURE__*/
+  _regeneratorRuntime().mark(function _callee2(rating, review, reviewId) {
+    var res;
+    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
+      while (1) switch (_context2.prev = _context2.next) {
+        case 0:
+          _context2.prev = 0;
+          _context2.next = 3;
+          return (0, _axios.default)({
+            method: 'PATCH',
+            url: "/api/v1/reviews/".concat(reviewId),
+            data: {
+              review: review,
+              rating: rating
+            }
+          });
+
+        case 3:
+          res = _context2.sent;
+
+          if (res.data.status === 'success') {
+            (0, _alert.showAlert)('success', 'Your review has been updated successfully!');
+            window.setTimeout(function () {
+              return location.assign('/my-reviews');
+            }, 1000);
+          }
+
+          _context2.next = 10;
+          break;
+
+        case 7:
+          _context2.prev = 7;
+          _context2.t0 = _context2["catch"](0);
+          (0, _alert.showAlert)('error', _context2.t0.response.data.message);
+
+        case 10:
+        case "end":
+          return _context2.stop();
+      }
+    }, _callee2, null, [[0, 7]]);
+  }));
+
+  return function submitReviewUpdate(_x5, _x6, _x7) {
+    return _ref2.apply(this, arguments);
+  };
+}();
+
+var submitReviewDelete = exports.submitReviewDelete =
+/*#__PURE__*/
+function () {
+  var _ref3 = _asyncToGenerator(
+  /*#__PURE__*/
+  _regeneratorRuntime().mark(function _callee3(reviewId, bookingId) {
+    var res, resFromBooking;
+    return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+      while (1) switch (_context3.prev = _context3.next) {
+        case 0:
+          _context3.prev = 0;
+          _context3.next = 3;
+          return (0, _axios.default)({
+            method: 'DELETE',
+            url: "/api/v1/reviews/".concat(reviewId),
+            data: {
+              reviewId: reviewId
+            }
+          });
+
+        case 3:
+          res = _context3.sent;
+
+          if (!(res.data.status === 'success')) {
+            _context3.next = 10;
+            break;
+          }
+
+          _context3.next = 7;
+          return updateReviewOnBooking(bookingId, null);
+
+        case 7:
+          resFromBooking = _context3.sent;
+          //success
+          (0, _alert.showAlert)('success', 'Your review has been deleted successfully!');
+          window.setTimeout(function () {
+            return location.assign('/my-reviews');
+          }, 1000);
+
+        case 10:
+          _context3.next = 15;
+          break;
+
+        case 12:
+          _context3.prev = 12;
+          _context3.t0 = _context3["catch"](0);
+          (0, _alert.showAlert)('error', _context3.t0.response.data.message);
+
+        case 15:
+        case "end":
+          return _context3.stop();
+      }
+    }, _callee3, null, [[0, 12]]);
+  }));
+
+  return function submitReviewDelete(_x8, _x9) {
+    return _ref3.apply(this, arguments);
+  };
+}();
+
+var updateReviewOnBooking = exports.updateReviewOnBooking =
+/*#__PURE__*/
+function () {
+  var _ref4 = _asyncToGenerator(
+  /*#__PURE__*/
+  _regeneratorRuntime().mark(function _callee4(bookingId, reviewId) {
+    var res;
+    return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+      while (1) switch (_context4.prev = _context4.next) {
+        case 0:
+          _context4.prev = 0;
+          _context4.next = 3;
+          return (0, _axios.default)({
+            method: 'PATCH',
+            url: "/api/v1/bookings/reviewUpdated/".concat(bookingId),
+            data: {
+              review: reviewId,
+              reviewAt: new Date().toISOString()
+            }
+          });
+
+        case 3:
+          res = _context4.sent;
+
+          if (!(res.data.status === 'success')) {
+            _context4.next = 8;
+            break;
+          }
+
+          return _context4.abrupt("return", res.data.data.data);
+
+        case 8:
+          return _context4.abrupt("return", false);
+
+        case 9:
+          _context4.next = 14;
+          break;
+
+        case 11:
+          _context4.prev = 11;
+          _context4.t0 = _context4["catch"](0);
+          (0, _alert.showAlert)('error', _context4.t0.response.data.message);
+
+        case 14:
+        case "end":
+          return _context4.stop();
+      }
+    }, _callee4, null, [[0, 11]]);
+  }));
+
+  return function updateReviewOnBooking(_x10, _x11) {
+    return _ref4.apply(this, arguments);
+  };
+}();
+
+var updateBookingIsReviewSubmitted = exports.updateBookingIsReviewSubmitted =
+/*#__PURE__*/
+function () {
+  var _ref5 = _asyncToGenerator(
+  /*#__PURE__*/
+  _regeneratorRuntime().mark(function _callee5(bookingId, isReviewSubmitted) {
+    var res;
+    return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+      while (1) switch (_context5.prev = _context5.next) {
+        case 0:
+          _context5.prev = 0;
+          _context5.next = 3;
+          return (0, _axios.default)({
+            method: 'PATCH',
+            url: "/api/v1/bookings/reviewUpdated/".concat(bookingId),
+            data: {
+              isReviewSubmitted: isReviewSubmitted,
+              reviewAt: new Date().toISOString()
+            }
+          });
+
+        case 3:
+          res = _context5.sent;
+
+          if (!(res.data.status === 'success')) {
+            _context5.next = 8;
+            break;
+          }
+
+          return _context5.abrupt("return", res.data);
+
+        case 8:
+          return _context5.abrupt("return", false);
+
+        case 9:
+          _context5.next = 14;
+          break;
+
+        case 11:
+          _context5.prev = 11;
+          _context5.t0 = _context5["catch"](0);
+          (0, _alert.showAlert)('error', _context5.t0.response.data.message);
+
+        case 14:
+        case "end":
+          return _context5.stop();
+      }
+    }, _callee5, null, [[0, 11]]);
+  }));
+
+  return function updateBookingIsReviewSubmitted(_x12, _x13) {
+    return _ref5.apply(this, arguments);
+  };
+}();
+
+var getBookingIdByUserIdAndTourId = exports.getBookingIdByUserIdAndTourId =
+/*#__PURE__*/
+function () {
+  var _ref6 = _asyncToGenerator(
+  /*#__PURE__*/
+  _regeneratorRuntime().mark(function _callee6(userId, tourId) {
+    var res;
+    return _regeneratorRuntime().wrap(function _callee6$(_context6) {
+      while (1) switch (_context6.prev = _context6.next) {
+        case 0:
+          _context6.prev = 0;
+          _context6.next = 3;
+          return (0, _axios.default)({
+            method: 'GET',
+            url: "/api/v1/bookings/getBookingIdByUserIdAndTourId",
+            data: {
+              user: userId,
+              tour: tourId
+            }
+          });
+
+        case 3:
+          res = _context6.sent;
+          console.log('aaaaaaaaaaaaaaaa', res);
+
+          if (!(res.data.status === 'success')) {
+            _context6.next = 9;
+            break;
+          }
+
+          return _context6.abrupt("return", res.data);
+
+        case 9:
+          return _context6.abrupt("return", false);
+
+        case 10:
+          _context6.next = 15;
+          break;
+
+        case 12:
+          _context6.prev = 12;
+          _context6.t0 = _context6["catch"](0);
+          (0, _alert.showAlert)('error', _context6.t0.response.data.message);
+
+        case 15:
+        case "end":
+          return _context6.stop();
+      }
+    }, _callee6, null, [[0, 12]]);
+  }));
+
+  return function getBookingIdByUserIdAndTourId(_x14, _x15) {
+    return _ref6.apply(this, arguments);
   };
 }();
 },{"axios":"../../node_modules/axios/index.js","./alert":"alert.js"}],"mapbox.js":[function(require,module,exports) {
@@ -8918,6 +9205,7 @@ var mapBox = document.getElementById('map');
 var loginForm = document.querySelector('.form--login');
 var signupForm = document.querySelector('.form--signup');
 var reviewForm = document.querySelector('.form--review');
+var reviewFormUpdate = document.querySelector('.form--review--update');
 var logOutBtn = document.querySelector('.nav_el---logout');
 var userDataForm = document.querySelector('.form-user-data');
 var userPasswordForm = document.querySelector('.form-user-password');
@@ -8955,19 +9243,43 @@ if (signupForm) {
 }
 
 if (reviewForm) {
-  console.log('reviewForm', reviewForm);
   reviewForm.addEventListener('submit', function (e) {
     e.preventDefault();
     var review = document.getElementById('review').value;
     var ratings = document.getElementsByName('rating');
     var rating;
     var tourId = document.getElementById('tourId').value;
+    var bookingId = document.getElementById('bookingId').value;
     ratings.forEach(function (button) {
       if (button.checked) {
         rating = button.value;
       }
     });
-    (0, _review.submitReview)(rating, review, tourId);
+    (0, _review.submitReview)(rating, review, tourId, bookingId);
+  });
+}
+
+if (reviewFormUpdate) {
+  reviewFormUpdate.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var review = document.getElementById('review').value;
+    var ratings = document.getElementsByName('rating');
+    var rating;
+    var reviewId = document.getElementById('reviewId').value;
+    var bookingId = document.getElementById('bookingId').value;
+    ratings.forEach(function (button) {
+      if (button.checked) {
+        rating = button.value;
+      }
+    });
+    (0, _review.submitReviewUpdate)(rating, review, reviewId);
+  });
+  var deleteBtn = document.querySelector('.form--review--update .btn--red');
+  deleteBtn.addEventListener('click', function (e) {
+    e.preventDefault();
+    var reviewId = document.getElementById('reviewId').value;
+    var bookingId = document.getElementById('bookingId').value;
+    (0, _review.submitReviewDelete)(reviewId, bookingId);
   });
 }
 

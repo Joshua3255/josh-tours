@@ -1,4 +1,3 @@
-
 extends base
 
 mixin navItem(link, text, icon, active)
@@ -66,18 +65,30 @@ block content
       font-family: inherit;
     }
 
-    .form--review p{
+    .form--review--update p{
       text-transform: none;
+    }
+
+    .form--review--update .btn--red{
+      margin-left:3rem;
+    }
+
+    .heading-secondary--error {
+      display:block;
     }
   script.
     function test(bookingId) {
       alert(bookingId);
     }
     // JavaScript to handle modal functionality
-    function openModal(bookingId, tourId) {
+    function openModal(reviewId, rating, review, bookingId) {
+      console.log('reviewId',reviewId);
       document.getElementById('myModal').style.display = 'block';
-      document.getElementById('bookingId').value = bookingId
-      document.getElementById('tourId').value = tourId
+      document.getElementById('reviewId').value = reviewId;
+      document.getElementById('bookingId').value = bookingId;
+      const ratingId = `rating${rating}`;
+      document.getElementById(ratingId).checked = true;
+      document.getElementById('review').value = decodeURIComponent(review);
     }
 
     function closeModal() {
@@ -97,8 +108,8 @@ block content
       .modal-content
         span.close($times;)
         h2.heading-secondary.ma-bt-sm Submit your review
-        form.form.form--review
-          input(type="hidden" id="tourId")
+        form.form.form--review--update
+          input(type="hidden" id="reviewId")
           input(type="hidden" id="bookingId")
           p.heading-secondary.ma-bt-md We hope you enjoyed your tour! Please take a moment to leave us a review and let us know how we did.
           .form__group
@@ -124,13 +135,14 @@ block content
             label.form__label(for="review") Additional Comments:
             textarea.width-whole(id="review" name="review" rows="4" placeholder="Write your review here...")
           .form__group 
-            button.btn.btn--green Submit
+            button.btn.btn--green Update
+            button.btn.btn--red(type='button') Delete
     .user-view
       nav.user-view__menu
         ul.side-nav
           +navItem('/me', 'Settings', 'settings')
-          +navItem('/my-tours', 'My bookings', 'briefcase', true)
-          +navItem('/my-reviews', 'My reviews', 'star')
+          +navItem('/my-tours', 'My bookings', 'briefcase')
+          +navItem('/my-reviews', 'My reviews', 'star', true)
           +navItem('#', 'Billing', 'credit-card')
         - if(user.role === 'admin') 
           .admin-nav
@@ -141,30 +153,24 @@ block content
               +navItem('#', 'Manage reviews', 'star')
               +navItem('#', 'Manage bookings', 'briefcase')
       .user-view__content
-        .user-view__my-tours-container
-          h2.heading-secondary.ma-bt-md My Bookings          
-          //- #{tour.imageCover}
-          if bookings.length 
-            .my-tours-tabel            
-              .my-tours-header
+        .user-view__my-reviews-container
+          h2.heading-secondary.ma-bt-md My Reviews          
+          if reviews.length 
+            .my-reviews-tabel            
+              .my-reviews-header
                 span 
-                span Name
-                span Duration
-                span Price
-                span Start
+                span Tour
+                span Rating
                 span End
-                span Review
-              .my-tours-rows          
-                each booking in bookings                             
-                  img(src=`img/tours/${booking.tour.imageCover}`, alt=`${booking.tour.name}`)
-                  p #{booking.tour.name}
-                  p #{`${booking.tour.duration} ${booking.tour.duration > 1 ? 'days': 'day'}`}
-                  p $ #{booking.price}
-                  p startday
+                span Comment                
+                span 
+              .my-reviews-rows          
+                each review in reviews                             
+                  img(src=`img/tours/${review.tour.imageCover}`, alt=`${review.tour.name}`)
+                  p #{review.tour.name}
+                  p #{review.rating}
                   p endday
-                  if booking.review
-                    p #{`${format(booking.reviewAt, 'LLL dd, yyyy')}`}
-                  else
-                    button.btn.btn--green.btn--small(onclick=`openModal('${booking._id}', '${booking.tour._id}')`) Review   
+                  p #{review.review}
+                  button.btn.btn--green.btn--small(onclick=`openModal('${review._id}', '${review.rating}','${encodeURIComponent(review.review)}','${review.booking}')`) Update   
           else 
-            p.heading-secondary.heading-secondary--error There is no Booking now.  
+            p.heading-secondary.heading-secondary--error There is no Review now.  

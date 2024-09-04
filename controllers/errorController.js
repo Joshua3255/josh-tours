@@ -78,6 +78,7 @@ const sendErrorProduction = (err, req, res) => {
   }
   // 1) Log error
   console.error('ERROR ❌', err);
+  console.error(err);
   // 2) Send generic message
   return res.status(err.statusCode).render('error', {
     title: 'Something went wrong!',
@@ -90,6 +91,7 @@ module.exports = (err, req, res, next) => {
   err.status = err.status || 'error';
 
   if (process.env.NODE_ENV === 'development') {
+    console.log(req);
     sendErrorForDev(err, req, res);
   } else if (process.env.NODE_ENV === 'production') {
     let error = { ...err };

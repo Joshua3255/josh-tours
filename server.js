@@ -19,8 +19,8 @@ mongoose
   // .connect(process.env.DATABASE_LOCAL, {
   .connect(DB, {
     useNewUrlParser: true,
-    useCreateIndex: true
-    // userFindAndModify: false
+    useCreateIndex: true,
+    userFindAndModify: false
   })
   .then(() => {
     // console.log(con.connections);

@@ -11,6 +11,18 @@ router.get(
   bookingController.getCheckoutSession
 );
 
+router.get(
+  '/getBookingIdByUserIdAndTourId',
+  bookingController.getBookingIdByUserIdAndTourId
+);
+
+router
+  .route('/reviewUpdated/:id')
+  .patch(
+    authController.protect,
+    bookingController.updateBooking
+  );
+
 router.use(
   authController.restrictTo('admin', 'lead-guide')
 );

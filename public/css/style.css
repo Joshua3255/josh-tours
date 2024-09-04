@@ -250,6 +250,18 @@ body {
   background-color: #55c57a;
 }
 
+.btn--red {
+  background-color: #d83a1e;
+  color: #fff;
+}
+.btn--red::after {
+  background-color: #d83a1e;
+}
+
+.btn--red:focus {
+  background-color: #a82710;
+}
+
 .btn--small {
   padding: 1.25rem 3rem !important;
   font-size: 1.4rem !important;
@@ -824,7 +836,8 @@ body {
   padding: 0 8rem;
 }
 
-.user-view__my-tours-container {
+.user-view__my-tours-container,
+.user-view__my-reviews-container {
   font-size: 1.5rem;
   padding: 0 3rem;
 }
@@ -1391,7 +1404,8 @@ body {
   transform: translateY(-2px);
 }
 
-.my-tours-tabel {
+.my-tours-tabel,
+.my-reviews-tabel {
   border: 1px solid #777;
   border-radius: 6px;
 }
@@ -1405,6 +1419,19 @@ body {
   border-bottom: 1px solid #777;
   gap: 1rem;
   padding: 0.5rem 1rem;
+  text-align: center;
+}
+
+.my-reviews-header {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr 3fr 1.5fr;
+  justify-content: space-between;
+  font-weight: 600;
+  font-size: 1.8rem;
+  border-bottom: 1px solid #777;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  text-align: center;
 }
 
 .my-tours-rows {
@@ -1415,13 +1442,27 @@ body {
   border-bottom: 1px solid #777;
   padding: 1rem;
   gap: 1rem;
+  text-align: center;
 }
 
-.my-tours-rows:last-child {
+.my-reviews-rows {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1fr 1fr 3fr 1.5fr;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid #777;
+  padding: 1rem;
+  gap: 1rem;
+  text-align: center;
+}
+
+.my-tours-rows:last-child,
+.my-reviews-rows:last-child {
   border-bottom: none;
 }
 
-.my-tours-rows img {
+.my-tours-rows img,
+.my-reviews-rows img {
   width: 100%;
 }
 

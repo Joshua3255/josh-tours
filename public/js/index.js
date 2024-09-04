@@ -1,7 +1,11 @@
 /* eslint-disable */
 import '@babel/polyfill';
 import { login, logout, signup } from './login';
-import { submitReview } from './review';
+import {
+  submitReview,
+  submitReviewUpdate,
+  submitReviewDelete
+} from './review';
 
 import { displayMap } from './mapbox';
 import { updateSettings } from './updateSettings';
@@ -13,6 +17,9 @@ const mapBox = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const signupForm = document.querySelector('.form--signup');
 const reviewForm = document.querySelector('.form--review');
+const reviewFormUpdate = document.querySelector(
+  '.form--review--update'
+);
 
 const logOutBtn = document.querySelector(
   '.nav_el---logout'
@@ -67,13 +74,14 @@ if (signupForm) {
 }
 
 if (reviewForm) {
-  console.log('reviewForm', reviewForm);
   reviewForm.addEventListener('submit', e => {
     e.preventDefault();
     const review = document.getElementById('review').value;
     const ratings = document.getElementsByName('rating');
     let rating;
     const tourId = document.getElementById('tourId').value;
+    const bookingId = document.getElementById('bookingId')
+      .value;
 
     ratings.forEach(button => {
       if (button.checked) {
@@ -81,7 +89,42 @@ if (reviewForm) {
       }
     });
 
-    submitReview(rating, review, tourId);
+    submitReview(rating, review, tourId, bookingId);
+  });
+}
+
+if (reviewFormUpdate) {
+  reviewFormUpdate.addEventListener('submit', e => {
+    e.preventDefault();
+    const review = document.getElementById('review').value;
+    const ratings = document.getElementsByName('rating');
+    let rating;
+    const reviewId = document.getElementById('reviewId')
+      .value;
+    const bookingId = document.getElementById('bookingId')
+      .value;
+
+    ratings.forEach(button => {
+      if (button.checked) {
+        rating = button.value;
+      }
+    });
+
+    submitReviewUpdate(rating, review, reviewId);
+  });
+
+  const deleteBtn = document.querySelector(
+    '.form--review--update .btn--red'
+  );
+
+  deleteBtn.addEventListener('click', e => {
+    e.preventDefault();
+    const reviewId = document.getElementById('reviewId')
+      .value;
+    const bookingId = document.getElementById('bookingId')
+      .value;
+
+    submitReviewDelete(reviewId, bookingId);
   });
 }
 

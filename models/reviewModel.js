@@ -11,7 +11,8 @@ const reviewSchema = new mongoose.Schema(
     rating: {
       type: Number,
       min: 1,
-      max: 5
+      max: 5,
+      required: [true, 'Rating can not be empty!']
     },
     createAt: {
       type: Date,
@@ -26,6 +27,11 @@ const reviewSchema = new mongoose.Schema(
       type: mongoose.Schema.ObjectId,
       ref: 'User',
       required: [true, 'Review must belong to a user']
+    },
+    booking: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'Booking',
+      required: [true, 'Review must belong to a booking']
     }
   },
   {
@@ -51,6 +57,10 @@ reviewSchema.pre(/^find/, function(next) {
     {
       path: 'user',
       select: 'name photo'
+    },
+    {
+      path: 'tour',
+      select: 'name imageCover'
     }
   ]);
   // this.populate({

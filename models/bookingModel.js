@@ -22,18 +22,26 @@ const bookingSchema = new mongoose.Schema({
   paid: {
     type: Boolean,
     default: true
+  },
+  review: {
+    type: mongoose.Schema.ObjectId,
+    ref: 'Review'
+  },
+  reviewAt: {
+    type: Date
   }
 });
 
 bookingSchema.pre(/^find/, function(next) {
-  this.populate('user').populate({
-    path: 'tour',
-    select: 'name duration imageCover'
-  });
-  // this.populate({
-  //   path: 'tour',
-  //   select: 'name, duration, price'
-  // });
+  this.populate('user')
+    .populate({
+      path: 'tour',
+      select: 'name duration imageCover'
+    })
+    .populate({
+      path: 'review',
+      select: 'createAt -tour -user'
+    });
   next();
 });
 

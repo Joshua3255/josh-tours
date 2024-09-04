@@ -123,6 +123,22 @@ exports.webhookCheckout = (req, res, next) => {
   res.status(200).json({ received: true });
 };
 
+exports.getBookingIdByUserIdAndTourId = catchAsync(
+  async (req, res, next) => {
+    const bookingId = await Booking.findOne({
+      tour: req.body.tour,
+      user: req.body.user
+    })._id;
+
+    console.log('bookingId', bookingId);
+
+    res.status(200).json({
+      status: 'success',
+      data: bookingId
+    });
+  }
+);
+
 exports.createBooking = factory.createOne(Booking);
 exports.getBooking = factory.getOne(Booking);
 exports.getAllBooking = factory.getAll(Booking);

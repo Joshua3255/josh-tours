@@ -42,6 +42,12 @@ router.get(
   viewsController.getMyTours
 );
 
+router.get(
+  '/my-reviews',
+  authController.protect,
+  viewsController.getMyReviews
+);
+
 router.post(
   '/submit-user-data',
   authController.protect,

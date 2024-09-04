@@ -1,8 +1,10 @@
+const { format } = require('date-fns');
 const Tour = require('../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
 const User = require('../models/userModel');
 const Booking = require('../models/bookingModel');
+const Review = require('../models/reviewModel');
 
 exports.alerts = (req, res, next) => {
   const { alert } = req.query;
@@ -74,10 +76,6 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
     user: req.user.id
   });
 
-  console.log(bookings);
-
-  // console.log(bookings);
-
   // // 2) Find tours with the returned IDs
   // const tourIds = bookings.map(el => el.tour);
 
@@ -87,9 +85,24 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
 
   res.status(200).render('myTours', {
     title: 'My Tours',
-    bookings
+    bookings,
+    format
   });
 });
+
+exports.getMyReviews = catchAsync(
+  async (req, res, next) => {
+    // 1) Find all reviews
+    const reviews = await Review.find({
+      user: req.user.id
+    });
+
+    res.status(200).render('myReviews', {
+      title: 'My Reviews',
+      reviews
+    });
+  }
+);
 
 exports.updateUserData = catchAsync(
   async (req, res, next) => {
