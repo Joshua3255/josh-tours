@@ -58,6 +58,8 @@ if (signupForm) {
     e.preventDefault();
     const name = document.getElementById('username').value;
     const email = document.getElementById('email').value;
+    const phoneNum = document.getElementById('phoneNum')
+      .value;
     const password = document.getElementById('password')
       .value;
     const passwordConfirm = document.getElementById(
@@ -69,7 +71,13 @@ if (signupForm) {
     //   showAlert('error', 'Confirmed password was not matched!');
     //   return false;
     // }
-    signup(name, email, password, passwordConfirm);
+    signup(
+      name,
+      email,
+      password,
+      passwordConfirm,
+      phoneNum
+    );
   });
 }
 
@@ -145,6 +153,10 @@ if (userDataForm)
     form.append(
       'photo',
       document.getElementById('photo').files[0]
+    );
+    form.append(
+      'phoneNum',
+      document.getElementById('phoneNum').value
     );
 
     //console.log(form);

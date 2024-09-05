@@ -85,7 +85,12 @@ exports.updateMe = catchAsync(async (req, res, next) => {
   }
 
   // 2) Filtered out unwanted fields names that are not allowed to be updated
-  const filteredBody = filterObj(req.body, 'name', 'email'); // update the fields only what we want for security . ex) updating role to admin;
+  const filteredBody = filterObj(
+    req.body,
+    'name',
+    'email',
+    'phoneNum'
+  ); // update the fields only what we want for security . ex) updating role to admin;
   if (req.file) filteredBody.photo = req.file.filename;
 
   // 3) Update user document

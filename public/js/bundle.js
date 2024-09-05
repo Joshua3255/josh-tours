@@ -8245,7 +8245,7 @@ var signup = exports.signup =
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  _regeneratorRuntime().mark(function _callee(name, email, password, passwordConfirm) {
+  _regeneratorRuntime().mark(function _callee(name, email, password, passwordConfirm, phoneNum) {
     var res;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) switch (_context.prev = _context.next) {
@@ -8259,7 +8259,8 @@ function () {
               name: name,
               email: email,
               password: password,
-              passwordConfirm: passwordConfirm
+              passwordConfirm: passwordConfirm,
+              phoneNum: phoneNum
             }
           });
 
@@ -8288,7 +8289,7 @@ function () {
     }, _callee, null, [[0, 7]]);
   }));
 
-  return function signup(_x, _x2, _x3, _x4) {
+  return function signup(_x, _x2, _x3, _x4, _x5) {
     return _ref.apply(this, arguments);
   };
 }();
@@ -8339,7 +8340,7 @@ function () {
     }, _callee2, null, [[0, 7]]);
   }));
 
-  return function login(_x5, _x6) {
+  return function login(_x6, _x7) {
     return _ref2.apply(this, arguments);
   };
 }();
@@ -9231,6 +9232,7 @@ if (signupForm) {
     e.preventDefault();
     var name = document.getElementById('username').value;
     var email = document.getElementById('email').value;
+    var phoneNum = document.getElementById('phoneNum').value;
     var password = document.getElementById('password').value;
     var passwordConfirm = document.getElementById('passwordConfirm').value; // This logic had already been in the User Schema
     // if (password !== passwordConfirm){
@@ -9238,7 +9240,7 @@ if (signupForm) {
     //   return false;
     // }
 
-    (0, _login.signup)(name, email, password, passwordConfirm);
+    (0, _login.signup)(name, email, password, passwordConfirm, phoneNum);
   });
 }
 
@@ -9289,7 +9291,8 @@ if (userDataForm) userDataForm.addEventListener('submit', function (e) {
   var form = new FormData();
   form.append('name', document.getElementById('name').value);
   form.append('email', document.getElementById('email').value);
-  form.append('photo', document.getElementById('photo').files[0]); //console.log(form);
+  form.append('photo', document.getElementById('photo').files[0]);
+  form.append('phoneNum', document.getElementById('phoneNum').value); //console.log(form);
 
   (0, _updateSettings.updateSettings)(form, 'data');
 });

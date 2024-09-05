@@ -18,6 +18,10 @@ const userSchema = new mongoose.Schema({
       'Please provide a valid email'
     ]
   },
+  phoneNum: {
+    type: String,
+    match: /^(\()?\d{3}(\))?(-|\s)?\d{3}(-|\s)\d{4}$/
+  },
   password: {
     type: String,
     required: [true, 'Please provide a password'],

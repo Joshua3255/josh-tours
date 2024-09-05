@@ -6,7 +6,8 @@ export const signup = async (
   name,
   email,
   password,
-  passwordConfirm
+  passwordConfirm,
+  phoneNum
 ) => {
   try {
     const res = await axios({
@@ -16,7 +17,8 @@ export const signup = async (
         name,
         email,
         password,
-        passwordConfirm
+        passwordConfirm,
+        phoneNum
       }
     });
 
