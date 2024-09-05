@@ -123,7 +123,8 @@ const tourSchema = new mongoose.Schema(
         type: mongoose.Schema.ObjectId,
         ref: 'User'
       }
-    ]
+    ],
+    startDaysOfWeek: [Number] // 0 = Sunday, 1= Monday .. 6= Saturday
   },
   {
     toJSON: { virtuals: true },

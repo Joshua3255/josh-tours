@@ -6,7 +6,13 @@ mixin navItem(link, text, icon, active)
     a(href=`${link}`)
       svg
         use(xlink:href=`img/icons.svg#icon-${icon}`)
-      | #{text}    
+      | #{text}   
+
+mixin formatDate(date)
+  if date 
+    p #{format(date, 'LLL dd, yyyy')}
+  else
+    p #{format(addDays(new Date(), -10), 'LLL dd, yyyy')}
 
 block content 
   style.
@@ -152,7 +158,6 @@ block content
                 span Duration
                 span Price
                 span Start
-                span End
                 span Review
               .my-tours-rows          
                 each booking in bookings                             
@@ -160,8 +165,7 @@ block content
                   p #{booking.tour.name}
                   p #{`${booking.tour.duration} ${booking.tour.duration > 1 ? 'days': 'day'}`}
                   p $ #{booking.price}
-                  p startday
-                  p endday
+                  +formatDate(booking.startDate)
                   if booking.review
                     p #{`${format(booking.reviewAt, 'LLL dd, yyyy')}`}
                   else

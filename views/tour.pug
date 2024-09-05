@@ -5,6 +5,20 @@ block append head
   script(src='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.js')
   link(href='https://api.mapbox.com/mapbox-gl-js/v2.9.1/mapbox-gl.css' rel='stylesheet')
 
+  //- Flatpickr CSS
+  link(rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css")
+  //- Flatpickr JS
+  script(src="https://cdn.jsdelivr.net/npm/flatpickr")
+
+  script.
+    function setSelectedDate(){
+      const datepicker = document.getElementById('datepicker');
+      const bookTourButton = document.getElementById('book-tour');
+      const selectedDate = datepicker.value;
+      // Update the data-selected-date attribute
+      bookTourButton.setAttribute('data-selected-date', selectedDate);
+    }
+
 mixin overviewBox(label, text, icon)
   .overview-box__detail
     svg.overview-box__icon
@@ -13,7 +27,8 @@ mixin overviewBox(label, text, icon)
     span.overview-box__text= text
 
 
-block content
+block content  
+
   section.section-header
     .header__hero
       .header__hero-overlay &nbsp;
@@ -87,6 +102,27 @@ block content
         h2.heading-secondary What are you waiting for?
         p.cta__text= `${tour.duration} days. 1 adventure. Infinite memories. Make it yours today!`
         if user
-          button.btn.btn--green.span-all-rows#book-tour(data-tour-id=`${tour.id}`) Book tour now!
+          .cta__datepicker
+            input#startDaysOfWeek(type="hidden" value=tour.startDaysOfWeek)
+            input#datepicker(type="text", placeholder="Select an available date" onChange="setSelectedDate()")
+          button.btn.btn--green#book-tour(data-tour-id=`${tour.id}` data-selected-date='') Book tour now!
         else
           a.btn.btn--green.span-all-rows(href='/login') Log in to book tour!
+
+  script.
+    // Initialize Flatpickr
+    // 0 = Sunday 1 = Monday ... 6 = Saturday
+    flatpickr("#datepicker", {
+      dateFormat: "Y-m-d",  // Format the date
+      minDate: new Date().fp_incr(1),    // Set minimum date to today + 1
+      maxDate: new Date().fp_incr(90), // Max date is 90 days from today
+      disable: [
+        function(date){
+          const numArray = JSON.parse(document.getElementById("startDaysOfWeek").value);
+          //- console.log('++++++1');
+          //- console.log('++++++', document.getElementById("startDaysOfWeek"));
+          return (!numArray.includes(date.getDay()));  
+          //return (date.getDay() !== 0 && date.getDay() !== 3);  
+        }
+      ]
+    });

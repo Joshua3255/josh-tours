@@ -37,7 +37,6 @@ const server = app.listen(port, () => {
 
 process.on('unhandledRejection', err => {
   console.log(err.name, err.message);
-  console.log(err);
   console.log('UNHANDLER REJECTION! ❌ Shutting down...');
   // For running Demo server continuosly, do not run process.exit when we had unhandledRejection errors
   // server.close(() => {

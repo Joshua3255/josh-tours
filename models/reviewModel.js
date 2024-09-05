@@ -1,6 +1,7 @@
 // review  / rating  /createAt / ref to tour / rf to user
 const mongoose = require('mongoose');
 const Tour = require('./tourModel');
+const Booking = require('./bookingModel');
 
 const reviewSchema = new mongoose.Schema(
   {
@@ -40,6 +41,12 @@ const reviewSchema = new mongoose.Schema(
   }
 );
 
+reviewSchema.virtual('start', {
+  ref: 'Booking',
+  foreignField: 'ObjectId(_id)',
+  localField: 'booking'
+});
+
 // QUERY MIDDLEWARE
 reviewSchema.pre(/^find/, function(next) {
   // this.populate([
@@ -63,6 +70,16 @@ reviewSchema.pre(/^find/, function(next) {
       select: 'name imageCover'
     }
   ]);
+
+  // this.populate({
+  //   path: 'user',
+  //   select: 'name photo',
+  //   populate: {
+  //     path: 'tour',
+  //     select: 'name imageCover'
+  //   }
+  // });
+
   // this.populate({
   //   path: 'user',
   //   select: '-__v'

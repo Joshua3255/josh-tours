@@ -7,7 +7,7 @@ const router = express.Router(); // mergeParams:true  allow to access parent's p
 router.use(authController.protect);
 
 router.get(
-  '/checkout-session/:tourId',
+  '/checkout-session/:tourId/:startDate',
   bookingController.getCheckoutSession
 );
 

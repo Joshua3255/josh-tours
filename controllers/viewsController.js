@@ -1,4 +1,4 @@
-const { format } = require('date-fns');
+const { format, addDays } = require('date-fns');
 const Tour = require('../models/tourModel');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -86,7 +86,8 @@ exports.getMyTours = catchAsync(async (req, res, next) => {
   res.status(200).render('myTours', {
     title: 'My Tours',
     bookings,
-    format
+    format,
+    addDays
   });
 });
 
@@ -99,7 +100,8 @@ exports.getMyReviews = catchAsync(
 
     res.status(200).render('myReviews', {
       title: 'My Reviews',
-      reviews
+      reviews,
+      format
     });
   }
 );

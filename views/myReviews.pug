@@ -7,6 +7,12 @@ mixin navItem(link, text, icon, active)
         use(xlink:href=`img/icons.svg#icon-${icon}`)
       | #{text}    
 
+mixin formatDate(date)
+  if date 
+    p #{format(date, 'LLL dd, yyyy')}
+  else
+    p #{format(addDays(new Date(), -10), 'LLL dd, yyyy')}
+
 block content 
   style.
     /* Basic modal styling */
@@ -161,7 +167,7 @@ block content
                 span 
                 span Tour
                 span Rating
-                span End
+                span Review At
                 span Comment                
                 span 
               .my-reviews-rows          
@@ -169,7 +175,7 @@ block content
                   img(src=`img/tours/${review.tour.imageCover}`, alt=`${review.tour.name}`)
                   p #{review.tour.name}
                   p #{review.rating}
-                  p endday
+                  +formatDate(review.createAt)
                   p #{review.review}
                   button.btn.btn--green.btn--small(onclick=`openModal('${review._id}', '${review.rating}','${encodeURIComponent(review.review)}','${review.booking}')`) Update   
           else 

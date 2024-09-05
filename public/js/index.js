@@ -52,7 +52,7 @@ if (loginForm) {
 }
 
 if (signupForm) {
-  console.log('signupForm', signupForm);
+  // console.log('signupForm', signupForm);
 
   signupForm.addEventListener('submit', e => {
     e.preventDefault();
@@ -182,12 +182,21 @@ if (userPasswordForm)
 
 if (bookBtn) {
   bookBtn.addEventListener('click', e => {
-    e.target.textContent = 'Prcessing...';
-    const { tourId } = e.target.dataset;
-    bookTour(tourId);
+    const { tourId, selectedDate } = e.target.dataset;
+
+    if (!selectedDate) {
+      showAlert(
+        'error',
+        'Please select an available date first!!',
+        8
+      );
+      return false;
+    }
+    e.target.textContent = 'Processing...';
+    bookTour(tourId, selectedDate);
   });
 }
 
 const alertMessage = document.querySelector('body').dataset
   .alert;
-if (alertMessage) showAlert('success', alertMessage, 10);
+if (alertMessage) showAlert('success', alertMessage, 8);

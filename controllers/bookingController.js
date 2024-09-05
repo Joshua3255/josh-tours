@@ -12,6 +12,7 @@ exports.getCheckoutSession = catchAsync(
   async (req, res, next) => {
     // 1) Get the currently booked tour
     const tour = await Tour.findById(req.params.tourId);
+    const { tourId, startDate } = req.params;
 
     const success_url =
       // Stripe WebHook only with the real domain.
@@ -21,9 +22,9 @@ exports.getCheckoutSession = catchAsync(
           )}/my-tours?alert=booking`
         : `${req.protocol}://${req.get(
             'host'
-          )}/my-tours?tour=${req.params.tourId}&user=${
+          )}/my-tours?tour=${tourId}&user=${
             req.user.id
-          }&price=${tour.price}`;
+          }&price=${tour.price}&startDate=${startDate}`;
 
     const images =
       process.env.NODE_ENV === 'production'
@@ -66,7 +67,10 @@ exports.getCheckoutSession = catchAsync(
           quantity: 1
         }
       ],
-      mode: 'payment'
+      mode: 'payment',
+      metadata: {
+        tourStartDate: startDate
+      }
     });
     // 3) Create session aas respones
     res.status(200).json({
@@ -79,9 +83,16 @@ exports.getCheckoutSession = catchAsync(
 exports.createBookingCheckout = catchAsync(
   async (req, res, next) => {
     //This is only TEMPORARY, because it's UNSECURE: everyone can make bookings without paying.
-    const { tour, user, price } = req.query;
+    const { tour, user, price, startDate } = req.query;
+
+    const startDateConverted = new Date(startDate);
     if (!tour && !user && !price) return next();
-    await Booking.create({ tour, user, price });
+    await Booking.create({
+      tour,
+      user,
+      price,
+      startDate: startDateConverted
+    });
 
     res.redirect(
       `${req.originalUrl.split('?')[0]}?alert=booking`
@@ -98,7 +109,11 @@ const createBookingCheckoutFunction = async session => {
     //session.line_items.price_data.unit_amount / 100;
     session.amount_total / 100;
 
-  await Booking.create({ tour, user, price });
+  const startDate = new Date(
+    session.metadata.tourStartDate
+  );
+
+  await Booking.create({ tour, user, price, startDate });
 };
 
 exports.webhookCheckout = (req, res, next) => {
